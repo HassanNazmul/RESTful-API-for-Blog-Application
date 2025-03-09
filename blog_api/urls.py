@@ -22,4 +22,6 @@ urlpatterns = [
 
     # Include the authentication app's URLs
     path('api/auth/', include('authentication.urls')),
+    path('api/blog/', include('blog.urls')),
+
 ]

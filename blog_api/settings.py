@@ -54,6 +54,7 @@ INSTALLED_APPS += THIRD_PARTY_APPS
 
 MY_APPS = [
     'authentication',
+    'blog',
 ]
 
 INSTALLED_APPS += MY_APPS
