@@ -1,21 +1,24 @@
-from rest_framework import generics, permissions, status
+from rest_framework import viewsets, permissions, status, filters
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post, Category, Tag
 from .serializers import PostSerializer, CategorySerializer, TagSerializer
 
-class PostListCreateView(generics.ListCreateAPIView):
-    queryset = Post.objects.filter(status='published')
-    serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
+class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = 'slug'
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['category__slug', 'tags__slug']
+    search_fields = ['title', 'content']
+
+    def get_queryset(self):
+        if self.action == 'list':
+            return Post.objects.filter(status='published')
+        return Post.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
     def perform_update(self, serializer):
         serializer.save(author=self.request.user)
@@ -25,12 +28,14 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
         self.perform_destroy(instance)
         return Response({"message": "Post deleted successfully"}, status=status.HTTP_200_OK)
 
-class CategoryListCreateView(generics.ListCreateAPIView):
+class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    lookup_field = 'slug'
 
-class TagListCreateView(generics.ListCreateAPIView):
+class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    lookup_field = 'slug'
