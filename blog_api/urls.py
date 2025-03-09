@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Include the authentication app's URLs
-    path('api/', include('authentication.urls')),
+    path('api/auth/', include('authentication.urls')),
 ]

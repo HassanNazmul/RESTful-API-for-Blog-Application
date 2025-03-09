@@ -12,12 +12,12 @@ from .views import (
 
 urlpatterns = [
     # Authentication endpoints
-    path('auth/register/', RegisterView.as_view(), name='auth_register'),
-    path('auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('auth/logout/', LogoutView.as_view(), name='auth_logout'),
-    path('auth/password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),
-    path('auth/password-reset-confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('register/', RegisterView.as_view(), name='auth_register'),
+    path('login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('logout/', LogoutView.as_view(), name='auth_logout'),
+    path('password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),
+    path('password-reset-confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
     
     # User management endpoints
